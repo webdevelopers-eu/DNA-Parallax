@@ -3,7 +3,7 @@ Pure CSS-animation defined parallax effect. No Javascript skills required, just 
 
 There is not much to say, if you know how to use @keyframes CSS then you know how to use this.
 
-Define your CSS @keyframes animation and put its name into "parallax" attribute of the element to be animated. If you add "parallax-container" on any of element's parent then that element will be used to determine the animation progress.
+Define your CSS @keyframes animation and put its name into "parallax" attribute of the element to be animated. If you add "parallax-container" class on any of element's parent then that element will be used to determine the animation progress.
 
 Animation points starts at 
 * **0%** container's side aligns with viewport's bottom - container is just bellow the viewport 
