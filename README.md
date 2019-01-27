@@ -14,7 +14,7 @@ The best way is to look at `example.html` file. It is very simple and self-expla
 
 ## Limitations
 * **units** CSS animated properties must have same units. E.g. you cannot use `transition: rotate(360`**deg**`)` in one keyframe and `transition: rotate(360`**rad**`)`
-* **IE** is not supported (yet). But it should be easy to create default CSS fallback styles and all animation-defined (including `position:fixed`) place into `0%` key of the `@keyframe`... 
+* **IE** is not supported (yet). But it should be easy to create standard CSS fallback styles and all animation-related CSS styles put into `0%` key of the `@keyframe` - they will overwrite CSS defaults if browser is supported... 
 
 ## Feedback
 Let me know what problems did you run in.
