@@ -17,6 +17,7 @@
  */
 (function($, window) {
     var $window = $(window);
+    var allRules = {};
 
     // Hook on scroll
     var lock = 0;
@@ -162,17 +163,29 @@
 	    var name = names[k];
 	    var rule = null;
 
-	    for (i = 0; !rule && i < document.styleSheets.length; ++i) {
-		var sheet = document.styleSheets[i];
-		try {
-		    for (j = 0; !rule && j < sheet.cssRules.length; ++j) {
-			var sheetRule = sheet.cssRules[j];
-			if (sheetRule.type == 7 && sheetRule.name == name) {
-			    rule = sheetRule;
+	    if (allRules[name]) { // Already found
+		rule = allRules[name];
+	    } else { // Search again, new CSS may be loaded...
+		for (i = 0; !rule && i < document.styleSheets.length; ++i) {
+		    var sheet = document.styleSheets[i];
+		    try {
+			for (j = 0; !rule && j < sheet.cssRules.length; ++j) {
+			    var sheetRule = sheet.cssRules[j];
+			    if (sheetRule.type == 7) {
+				allRules[sheetRule.name] = sheetRule; // Collect it for faster repeated search
+				if (sheetRule.name == name) {
+				    rule = sheetRule;
+				}
+			    }
+			}
+		    } catch (e) { // may be triggered by forbidden access to third-party CSS
+			debugger;
+			if (e.code == 18) { // Ignore - quite common with third-parth CSS message: "Failed to read the 'cssRules' property from 'CSSStyleSheet': Cannot access rules"
+			    console.log("DNA Parallax: Cannot read CSS rules, add attribute crossorigin=\"anonymous\" on <link> tag if you store your @keyframes definitions in following file: " + sheet.href);
+			} else {
+			    console.log("DNA Parallax: " + e.name + " Exception wile accessing CSS " + sheet.href, e.message); // non fatal? What to do?
 			}
 		    }
-		} catch (e) { // may be triggered by forbidden access to third-party CSS
-		    console.log("DNA Parallax: Exception wile accessing CSS", e, sheet); // non fatal? What to do?
 		}
 	    }
 
