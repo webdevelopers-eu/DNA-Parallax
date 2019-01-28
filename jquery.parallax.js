@@ -163,10 +163,16 @@
 	    var rule = null;
 
 	    for (i = 0; !rule && i < document.styleSheets.length; ++i) {
-		for (j = 0; !rule && j < document.styleSheets[i].cssRules.length; ++j) {
-		    if (document.styleSheets[i].cssRules[j].type == 7 && document.styleSheets[i].cssRules[j].name == name) {
-			rule = document.styleSheets[i].cssRules[j];
+		var sheet = document.styleSheets[i];
+		try {
+		    for (j = 0; !rule && j < sheet.cssRules.length; ++j) {
+			var sheetRule = sheet.cssRules[j];
+			if (sheetRule.type == 7 && sheetRule.name == name) {
+			    rule = sheetRule;
+			}
 		    }
+		} catch (e) { // may be triggered by forbidden access to third-party CSS
+		    console.log("DNA Parallax: Exception wile accessing CSS", e, sheet); // non fatal? What to do?
 		}
 	    }
 
