@@ -51,7 +51,7 @@
 	this.$element = $(element);
 
 	// Find container
-	this.$container = this.$element.closest('[role!="parallax-container"]');
+	this.$container = this.$element.closest('[role~="parallax-container"]');
 	if (!this.$container.length) this.$container = this.$element;
 
 	// Parse settings
