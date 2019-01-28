@@ -1,6 +1,15 @@
 /**
  * CSS-defined parallax.
  *
+ * Syntax:
+ *
+ * <element role="parallax-container ...">
+ *   <element parallax="KEYFRAMES_NAME [KEYFRAMES_NAME ...]">...</element>
+ * </element>
+ *
+ * - "parallax-container" - parent with this role will be used to calculate animation progress. If not found then @parallax element is used instead.
+ * - KEYFRAMES_NAME - name of the @keyframes CSS at-rule definning animation. Multiple @keyframes will be joined into one animation.
+ *
  * @module     DNA Parallax
  * @author     Daniel Sevcik <sevcik@webdevelopers.cz>
  * @copyright  2018 Daniel Sevcik
@@ -42,12 +51,12 @@
 	this.$element = $(element);
 
 	// Find container
-	this.$container = this.$element.closest('.parallax-container');
+	this.$container = this.$element.closest('[role!="parallax-container"]');
 	if (!this.$container.length) this.$container = this.$element;
 
 	// Parse settings
-	this.animName = this.$element.attr('parallax');
-	this.anim = new DnaAnim(this.animName);
+	this.animNames = $.trim(this.$element.attr('parallax')).split(/\s+/);
+	this.anim = new DnaAnim(this.animNames);
     }
 
     /**
@@ -68,9 +77,9 @@
     /**
      * Animation name as specified by @parallax attribute.
      *
-     * @var string
+     * @var [] of @keyframes-defined animation names
      */
-    DnaParallax.prototype.animName = null;
+    DnaParallax.prototype.animNames = null;
 
     /**
      * Object with animation settings.
@@ -141,63 +150,78 @@
      *
      * @param string name CSS animation name
      */
-    function DnaAnim(name) {
-	var i, j;
+    function DnaAnim(names) {
+	var i, j, k;
 
 	this.props = [];
+	this.rules = [];
+	this.namedProps = {};
 
 	// Find animation object
-	for (i = 0; !this.rule && i < document.styleSheets.length; ++i) {
-	    for (j = 0; !this.rule && j < document.styleSheets[i].cssRules.length; ++j) {
-		if (document.styleSheets[i].cssRules[j].type == 7 && document.styleSheets[i].cssRules[j].name == name) {
-		    this.rule = document.styleSheets[i].cssRules[j];
+	for (k = 0; k < names.length; k++) {
+	    var name = names[k];
+	    var rule = null;
+
+	    for (i = 0; !rule && i < document.styleSheets.length; ++i) {
+		for (j = 0; !rule && j < document.styleSheets[i].cssRules.length; ++j) {
+		    if (document.styleSheets[i].cssRules[j].type == 7 && document.styleSheets[i].cssRules[j].name == name) {
+			rule = document.styleSheets[i].cssRules[j];
+		    }
 		}
 	    }
-	}
 
-	if (!this.rule) {
-	    throw new Error("Cannot find animation " + JSON.stringify(name));
-	}
-
-	// Extract keyframe styles
-	var list = {};
-	for (i = 0; i < this.rule.cssRules.length; i++) {
-	    var kf = this.rule.cssRules[i]; // @type CSSKeyframesRule
-	    var progress = parseFloat(kf.keyText) / 100;
-
-	    for (j=0; j < kf.style.length; j++) {
-		var n = kf.style[j];
-		if (!list[n]) {
-		    list[n] = new DnaProp(n);
-		    this.props.push(list[n]);
-		}
-		list[n].add(progress, kf.style[n]);
+	    if (!rule) {
+		throw new Error("Cannot find animation " + JSON.stringify(name));
 	    }
+
+	    this.parseRule(rule);
 	}
-	// console.log(this.props);
     }
 
 
     /**
-     * Array of props.
+     * Array of ordered props.
      *
      * @var []
      */
     DnaAnim.prototype.props = null;
 
     /**
+     * Array of props.
+     *
+     * @var {} of named props
+     */
+    DnaAnim.prototype.namedProps = null;
+
+    /**
      * Animation rule object.
      *
-     * @var CSSKeyframesRule
+     * @var [] of parsed CSSKeyframesRule objects
      */
-    DnaAnim.prototype.rule = null;
+    DnaAnim.prototype.rules = null;
 
     /**
      *
-     * @param float progress (1=100%)
+     * @param CSSKeyframesRule rule parse keyframes into props
      * @return void
      */
-    DnaAnim.prototype.getStyles = function(progress) {
+    DnaAnim.prototype.parseRule = function(rule) {
+	this.rules.push(rule);
+
+	// Extract keyframe styles
+	for (i = 0; i < rule.cssRules.length; i++) {
+	    var kf = rule.cssRules[i]; // @type CSSKeyframesRule
+	    var progress = parseFloat(kf.keyText) / 100;
+
+	    for (j=0; j < kf.style.length; j++) {
+		var n = kf.style[j];
+		if (!this.namedProps[n]) {
+		    this.namedProps[n] = new DnaProp(n);
+		    this.props.push(this.namedProps[n]);
+		}
+		this.namedProps[n].add(progress, kf.style[n]);
+	    }
+	}
 
     };
 
