@@ -1,4 +1,4 @@
-# dna-parallax
+# DNA Parallax / CSS Keyframes Scroll Animator
 Pure CSS-animation defined parallax effect. No Javascript skills required, just HTML/CSS.
 
 **There is not much to say. If you know how to use `@keyframes` CSS then you know how to use this.**
