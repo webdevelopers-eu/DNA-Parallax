@@ -9,59 +9,128 @@
 	    html {font-family: sans-serif; box-sizing: border-box; }
 	    body {overflow-x: hidden;}
 	    section {height: 100vh; margin: 10vh 0vh; background-color: #EFEFEF; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;}
-	    section::before {position: absolute; top: 10px; left: 10px; content: attr(title); color: silver; font-size: 1.2em;}
+	    section::before {position: absolute; top: 0px; left: 0px; content: attr(title); color: silver; font-size: 1.2em; background: white; padding: 1em 2em; opacity: 0.5;}
+	    .bg-image {background-size: 200px 60px; background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEiIHZpZXdCb3g9IjAgMCA1MCAxNSI+PHRleHQgeD0iMCIgeT0iMTAiIGZpbGw9InJlZCIgZm9udC1mYW1pbHk9IkJpdHN0cmVhbSBDaGFydGVyIiBmb250LXNpemU9IjUiPjx0c3Bhbj5ETkEgUGFyYWxsYXg8L3RzcGFuPjwvdGV4dD48L3N2Zz4K");}
+	    big {font-size: 5vw; text-align: center;}
+	    .box {width: 8vw; height: 8vw; background-color: gray; border: 2px solid white;}
+	    .row {display: flex;}
 	    [parallax] {z-index: 100}
 
 	    @keyframes fx-example1 {
 	       0% {
-		  transform: translate(150vw, 150vw) rotate(-360deg) scale(0);
+		  transform: translate(150vw, 150vh) rotate(-360deg) scale(0) skew(0deg);
 		  opacity: -0.5;
 		  color: rgb(255, 0, 0);
-	       }
-	       60% {
-		  transform: translate(0vw, 0vw)  rotate(0deg) scale(1);
-		  opacity: 1;
-		  color: rgb(0, 0, 0);
 	       }
 	       40% {
-		  transform: translate(0vw, 0vw)  rotate(0deg) scale(1);
+		  transform: translate(0vw, 0vw) rotate(0deg) scale(1) skew(0deg);
 		  opacity: 1;
 		  color: rgb(0, 0, 0);
 	       }
-	       100% {
-		  transform: translate(150vw, -150vw) rotate(360deg) scale(0);
+	       60% {
+		  transform: translate(0vw, 0vw) rotate(0deg) scale(1) skew(0deg);
+		  opacity: 1;
+		  color: rgb(0, 0, 0);
+		  filter: blur(0vw);
+	       }
+	       65% {
+		  transform: translate(-20vw, 0vw) rotate(0deg) scale(1) skew(-45deg);
+		  filter: blur(0.5vh);
+	       }
+	       75% {
+		  transform: translate(-100vw, 0vw) rotate(0deg) scale(1) skew(-45deg);
 		  opacity: -0.5;
-		  color: rgb(255, 0, 0);
+		  color: rgb(100, 100, 100);
+		  filter: blur(1vh);
 	       }
 	    }
 
 	    /* Adds different start/end position to fx-example1 for the "Microsoft" label - see parallax attribute*/
 	    @keyframes fx-example1-override {
 	       0% {
-		  transform: translate(150vw, -150vw) rotate(360deg) scale(0);
+		  transform: translate(-150vw, 150vh) rotate(360deg) scale(0);
 	       }
-	       100% {
-		  transform: translate(150vw, 150vw) rotate(-360deg) scale(0);
+	       65% {
+		  transform: translate(20vw, 0vw) rotate(0deg) scale(1) skew(45deg);
+	       }
+	       75% {
+		  transform: translate(100vw, 0vw) rotate(0deg) scale(1) skew(45deg);
 	       }
 	    }
 
+	    @keyframes fx-example2 {
+	       0% {
+		  background-position: 0vw 0vh;
+	       }
+	       50% {
+		  filter: blur(0px);
+	       }
+	       100% {
+		  background-position: 0vw 100vh;
+		  filter: blur(20px);
+	       }
+	    }
+
+	    @keyframes fx-example3 {
+	       50% {
+		  transform: rotate(0deg) scale(1) translate(0vw, 0vw);
+		  filter: blur(0px);
+		  opacity: 1;
+	       }
+	       75% {
+		  filter: blur(20px);
+		  opacity: 0;
+	       }
+	    }
+	    @keyframes fx-example3-1 { 75% {transform: rotate(360deg) scale(2) translate(-50vw, -50vw);}}
+	    @keyframes fx-example3-2 { 75% {transform: rotate(360deg) scale(2) translate(0vw, -50vw);}}
+	    @keyframes fx-example3-3 { 75% {transform: rotate(360deg) scale(2) translate(50vw, -50vw);}}
+	    @keyframes fx-example3-4 { 75% {transform: rotate(360deg) scale(2) translate(-50vw, 0vw);}}
+	    @keyframes fx-example3-5 { 75% {transform: rotate(360deg) scale(2) translate(0vw, 0vw);}}
+	    @keyframes fx-example3-6 { 75% {transform: rotate(360deg) scale(2) translate(50vw, 0vw);}}
+	    @keyframes fx-example3-7 { 75% {transform: rotate(360deg) scale(2) translate(-50vw, 50vw);}}
+	    @keyframes fx-example3-8 { 75% {transform: rotate(360deg) scale(2) translate(0vw, 50vw);}}
+	    @keyframes fx-example3-9 { 75% {transform: rotate(360deg) scale(2) translate(50vw, 50vw);}}
 	</style>
 
     </head>
 
     <body>
-	<section class="spacer">leading space ... scroll down</section>
+	<section class="spacer" title="Spacer">leading space ... scroll down</section>
 
-	<section role="parallax-container" title="Example 1">
-	    <div parallax="fx-example1" style="font-size: 10vw;">
+	<section role="parallax-container" title="Example #1: Rotate In/Slide Out">
+	    <big parallax="fx-example1" class="big">
 		<i class="fas fa-apple-alt"></i> Apple
-	    </div>
-	    <div parallax="fx-example1 fx-example1-override" style="font-size: 10vw;">
+	    </big>
+	    <big parallax="fx-example1 fx-example1-override" class="big">
 		<i class="fab fa-microsoft"></i> Microsoft
+	    </big>
+	</section>
+
+	<section parallax="fx-example2" title="Example #2: Slow Background &amp; Blur" class="bg-image">
+	    <big>Slow Scrolling Background</big>
+	    <big>Scroll Blur</big>
+	</section>
+
+	<section title="Example #3: Explosion" role="parallax-container">
+	    <div class="row">
+		<div class="box" parallax="fx-example3 fx-example3-1"></div>
+		<div class="box" parallax="fx-example3 fx-example3-2"></div>
+		<div class="box" parallax="fx-example3 fx-example3-3"></div>
+	    </div>
+	    <div class="row">
+		<div class="box" parallax="fx-example3 fx-example3-4"></div>
+		<div class="box" parallax="fx-example3 fx-example3-5"></div>
+		<div class="box" parallax="fx-example3 fx-example3-6"></div>
+	    </div>
+	    <div class="row">
+		<div class="box" parallax="fx-example3 fx-example3-7"></div>
+		<div class="box" parallax="fx-example3 fx-example3-8"></div>
+		<div class="box" parallax="fx-example3 fx-example3-9"></div>
 	    </div>
 	</section>
 
-	<section class="spacer">trailing space ... scroll up</section>
+	<section class="spacer" title="Spacer">trailing space ... scroll up</section>
 
     </body>
 </html>
