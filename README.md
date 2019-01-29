@@ -1,9 +1,9 @@
-# dna-parallax
+# DNA Parallax / CSS Keyframes Scroll Animator
 Pure CSS-animation defined parallax effect. No Javascript skills required, just HTML/CSS.
 
 **There is not much to say. If you know how to use `@keyframes` CSS then you know how to use this.**
 
-Define your CSS `@keyframes` animation and put its name into `parallax` attribute on the element to be animated. You can use multiple animation names and they will get merged into one final animation. Possible mergin conflicts will be resolved that later animation's conflicting CSS styles will overwrite previous animation's styles.
+Define your CSS `@keyframes` animation and put its name into `parallax` attribute on the element to be animated. You can use multiple white-space separated animation names and they will get merged into one final animation. Possible mergin conflicts will be resolved that later animation's conflicting CSS styles will overwrite previous animation's styles.
 
 If you add `role="parallax-container"` on any of element's parent then that element will be used to determine the animation progress.
 
