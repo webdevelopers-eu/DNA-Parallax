@@ -30,7 +30,7 @@
 
     // Hook on scroll
     var lock = 0;
-    $window.on("scroll", function() {
+    $window.on("scroll.parallax resize.parallax", function() {
 	if (lock++) return; // prevent simultaneous recalcs
 	window.requestAnimationFrame(function() {
 	    $('[parallax]').parallax();
