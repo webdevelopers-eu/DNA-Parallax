@@ -38,10 +38,11 @@
 		try {
 		    this.parallax = new DnaParallax(this);
 		} catch (e) {
-		    $(this).attr('parallax-error', e.message);
+		    $(this).attr('parallax-status', 'error: ' + e.message);
 		    console.error("DNA Parallax Exception: " + e.message);
 		    return;
 		}
+		$(this).attr('parallax-status', 'ready');
 	    }
 	    this.parallax.step();
 	});
