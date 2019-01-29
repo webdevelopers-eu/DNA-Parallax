@@ -1,7 +1,14 @@
 /**
- * CSS-defined parallax.
+ * DNA PARALLAX
+ * CSS-defined parallax effects bound to scrollbar
  *
- * Syntax:
+ * GNU General Public License v3.0
+ * https://github.com/webdevelopers-eu/DNA-Parallax/blob/master/LICENSE
+ *
+ * If you're looking for the latest version see https://github.com/webdevelopers-eu/dna-parallaxa
+ *
+ *
+ * SYNTAX:
  *
  * <element role="parallax-container ...">
  *   <element parallax="KEYFRAMES_NAME [KEYFRAMES_NAME ...]">...</element>
@@ -9,6 +16,8 @@
  *
  * - "parallax-container" - parent with this role will be used to calculate animation progress. If not found then @parallax element is used instead.
  * - KEYFRAMES_NAME - name of the @keyframes CSS at-rule definning animation. Multiple @keyframes will be joined into one animation.
+ *
+ * For more information see https://github.com/webdevelopers-eu/dna-parallax
  *
  * @module     DNA Parallax
  * @author     Daniel Sevcik <sevcik@webdevelopers.cz>
