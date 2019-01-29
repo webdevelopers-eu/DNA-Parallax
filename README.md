@@ -14,6 +14,8 @@ Animation starts at
 
 The best way is to look at `example.html` file. It is very simple and self-explanatory.
 
+[Try it yourself on CodePen](https://codepen.io/webdevelopers/pen/PVGKKO)
+
 ## Limitations
 * **units** CSS animated properties must have same units. E.g. you cannot use `transition: rotate(360`**deg**`)` in one keyframe and `transition: rotate(9`**rad**`)` in next.
 * **IE** is not supported (yet). But it should be easy to create standard CSS fallback styles and all animation-related CSS styles put into `0%` key of the `@keyframe` - they will overwrite CSS defaults if browser is supported...
