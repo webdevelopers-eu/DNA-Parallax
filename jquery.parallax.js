@@ -35,7 +35,13 @@
 	return this.each(function() {
 	    // Initialize
 	    if (!this.parallax || param == 'init') {
-		this.parallax = new DnaParallax(this);
+		try {
+		    this.parallax = new DnaParallax(this);
+		} catch (e) {
+		    $(this).attr('parallax-error', e.message);
+		    console.error("DNA Parallax Exception: " + e.message);
+		    return;
+		}
 	    }
 	    this.parallax.step();
 	});
