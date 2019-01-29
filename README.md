@@ -14,7 +14,7 @@ Animation starts at
 
 The best way is to look at `example.html` file. It is very simple and self-explanatory.
 
-[Try it yourself on CodePen](https://codepen.io/webdevelopers/pen/PVGKKO)
+[See for yourself on CodePen!](https://codepen.io/webdevelopers/full/PVGKKO) You can have a quick look at [HTML source](https://codepen.io/webdevelopers/pen/PVGKKO.html) and [CSS code](https://codepen.io/webdevelopers/pen/PVGKKO.css) used to create this demo.
 
 ## Limitations
 * **units** CSS animated properties must have same units. E.g. you cannot use `transition: rotate(360`**deg**`)` in one keyframe and `transition: rotate(9`**rad**`)` in next.
