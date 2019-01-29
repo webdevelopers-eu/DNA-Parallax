@@ -30,17 +30,55 @@
 
     // Hook on scroll
     var lock = 0;
-    $window.on("scroll.parallax resize.parallax", function() {
+    var viewTop = $window.scrollTop();
+    var lastViewTop = viewTop;
+    var lastWinHeight = $window.height();
+    var $scrollBox = $window;
+
+    // $(window).on("scroll.parallax resize.parallax", onScroll);
+    // function onScroll() {
+    //	$scrollBox = $(this);
+    //	animateFrame();
+    // }
+
+    // Actually this is useless for Parallax as this lags behind scrolling redraw
+    // Modern browser scroll, update screen and then fire hooks on requestAnimationFrame()
+    // Sure, they solved browser smooth scrolling problem indeed... Nice.
+    animateFrame();
+
+    // Recalculate everything - scroll/resize hook
+    function animateFrame() {
 	if (lock++) return; // prevent simultaneous recalcs
-	window.requestAnimationFrame(function() {
-	    $('[parallax]').parallax();
-	    lock = 0;
-	});
-    });
+	var newViewTop = $scrollBox.scrollTop();
+
+	if (newViewTop != lastViewTop) {
+	    lastViewTop = viewTop;
+	    viewTop = $scrollBox.scrollTop();
+
+	    // Do those currently visible
+	    var $all = $('[parallax]');
+	    var $onscreen = $all.not('[parallax-progress="0%"]');
+	    var $offscreen = $all.not($onscreen);
+	    $onscreen.parallax();
+	    // If scrolling down then don't consider animations already scrolled up, if scrolling up ignore animations scrolled down...
+	    $offscreen.not(viewTop - lastViewTop > 0 ? "[parallax-progress='100%']" : "[parallax-progress='0%']" ).parallax();
+	}
+
+	window.requestAnimationFrame(animateFrame);
+	lock = 0;
+    }
 
     // jQuery plugin - progress animation or force reinitialization
     // $(el).parallax(["init"]);
     $.fn.parallax = function(param) {
+	// Remove position cache
+	this.each(function() {
+	    if (this.parallax && this.parallax.$container) {
+		this.parallax.$container.removeData('parallaxOffset');
+	    }
+	});
+
+
 	return this.each(function() {
 	    // Initialize
 	    if (!this.parallax || param == 'init') {
@@ -138,10 +176,14 @@
      * @return void
      */
     DnaParallax.prototype.calculateProgress = function() {
-	var containerTop = this.$container.offset().top;
+	// Check if it was precalculated by other [parallax] sibling.
+	var offset = this.$container.data('parallaxOffset') || this.$container.offset();
+
+	this.$container.data('parallaxOffset', offset);
+	var containerTop = offset.top;
+
 	var containerHeight = this.$container.height();
 	var viewHeight = $window.height();
-	var viewTop = $window.scrollTop();
 	var progress0, progress100;
 
 	// 0%: container's top is alligned with view's bottom
@@ -156,7 +198,9 @@
 	if (this.progress > 1) this.progress = 1;
 	else if (this.progress < 0) this.progress = 0;
 
-	this.$element.attr('parallax-progress', (Math.round(this.progress * 1000000) / 10000) + "%");
+	var progress = (Math.round(this.progress * 1000000) / 10000) + "%";
+	this.$element.attr('parallax-progress', progress);
+	this.$container.attr('parallax-progress', progress);
     };
 
 
