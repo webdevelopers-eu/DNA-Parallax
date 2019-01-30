@@ -214,7 +214,7 @@
 
 	var attrs = {
 	    "parallax-progress": Math.floor(this.progress * 100) + "%",
-	    "parallax-approx": Math.floor(this.progress * 20) * 5 + "f " + Math.floor(this.progress * 10) * 10 + "d",
+	    "parallax-step": "penta-" + Math.floor(this.progress * 20) * 5 + " deca-" + Math.floor(this.progress * 10) * 10 + "",
 	    "parallax-status": this.realProgress < 0 || this.realProgress > 1 ? 'off' : 'on'
 	};
 
