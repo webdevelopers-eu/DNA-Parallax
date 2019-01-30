@@ -21,7 +21,7 @@
  *
  * @module     DNA Parallax
  * @author     Daniel Sevcik <sevcik@webdevelopers.cz>
- * @copyright  2018 Daniel Sevcik
+ * @copyright  2019 Daniel Sevcik
  * @since      2019-01-26 13:05:24 UTC
  */
 (function($, window) {
@@ -31,41 +31,41 @@
     // Hook on scroll
     var lock = 0;
     var viewTop = $window.scrollTop();
-    var lastViewTop = viewTop;
-    var lastWinHeight = $window.height();
-    var $scrollBox = $window;
+    var viewHeight = $window.height();
+    var viewTopLast = viewTop;
 
-    // $(window).on("scroll.parallax resize.parallax", onScroll);
-    // function onScroll() {
-    //	$scrollBox = $(this);
-    //	animateFrame();
-    // }
+    $window
+	.on("resize.parallax", function() {viewHeight = $window.height();})
+	// .on("scroll.parallax resize.parallax", requestFrame)
+    ;
+    requestFrame();
 
-    // Actually this is useless for Parallax as this lags behind scrolling redraw
-    // Modern browser scroll, update screen and then fire hooks on requestAnimationFrame()
-    // Sure, they solved browser smooth scrolling problem indeed... Nice.
-    animateFrame();
+    function requestFrame() {
+	if (lock++) return; // prevent simultaneous recalcs
+	animateFrame();
+	lock = 0;
+	window.requestAnimationFrame(requestFrame);
+    }
 
     // Recalculate everything - scroll/resize hook
     function animateFrame() {
-	if (lock++) return; // prevent simultaneous recalcs
-	var newViewTop = $scrollBox.scrollTop();
+	var viewTopCurr = $window.scrollTop();
 
-	if (newViewTop != lastViewTop) {
-	    lastViewTop = viewTop;
-	    viewTop = $scrollBox.scrollTop();
+	if (viewTopCurr == viewTopLast) return;
 
-	    // Do those currently visible
-	    var $all = $('[parallax]');
-	    var $onscreen = $all.not('[parallax-progress="0%"]');
-	    var $offscreen = $all.not($onscreen);
-	    $onscreen.parallax();
-	    // If scrolling down then don't consider animations already scrolled up, if scrolling up ignore animations scrolled down...
-	    $offscreen.not(viewTop - lastViewTop > 0 ? "[parallax-progress='100%']" : "[parallax-progress='0%']" ).parallax();
-	}
+	viewTopLast = viewTop;
+	viewTop = viewTopCurr;
 
-	window.requestAnimationFrame(animateFrame);
-	lock = 0;
+	// Do those currently visible
+	var $all = $('[parallax]');
+	var $onscreen = $all.not('[parallax-progress="0%"], [parallax-progress="100%"]');
+	$onscreen.parallax();
+
+	// If scrolling down then don't consider animations already scrolled up, if scrolling up ignore animations scrolled down...
+	$all
+	    .not($onscreen)
+	    .not(viewTop - viewTopLast > 0 ? "[parallax-progress='100%']" : "[parallax-progress='0%']" )
+	    .parallax();
     }
 
     // jQuery plugin - progress animation or force reinitialization
@@ -177,13 +177,14 @@
      */
     DnaParallax.prototype.calculateProgress = function() {
 	// Check if it was precalculated by other [parallax] sibling.
-	var offset = this.$container.data('parallaxOffset') || this.$container.offset();
+	var offset = this.$container.data('parallaxOffset');
+	if (!offset) {
+	    offset = this.$container.offset();
+	    this.$container.data('parallaxOffset', offset);
+	}
 
-	this.$container.data('parallaxOffset', offset);
 	var containerTop = offset.top;
-
 	var containerHeight = this.$container.height();
-	var viewHeight = $window.height();
 	var progress0, progress100;
 
 	// 0%: container's top is alligned with view's bottom
@@ -198,7 +199,7 @@
 	if (this.progress > 1) this.progress = 1;
 	else if (this.progress < 0) this.progress = 0;
 
-	var progress = (Math.round(this.progress * 1000000) / 10000) + "%";
+	var progress = (Math.round(this.progress * 10000) / 100) + "%";
 	this.$element.attr('parallax-progress', progress);
 	this.$container.attr('parallax-progress', progress);
     };
