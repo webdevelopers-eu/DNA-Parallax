@@ -32,12 +32,15 @@
     var viewHeight = $window.height();
     var viewTopLast = viewTop;
     var scrolling = true;
+    var eventType = "scroll"; // EXPERIMENTS: "scroll" | "frame" use on-scroll event or requestAnimationFrame, visually better results with "scroll" in FF.
 
     function requestFrame() {
 	if (lock++) return; // prevent simultaneous recalcs
 	while (scrolling && animateFrame());
 	lock = 0;
-	// window.requestAnimationFrame(requestFrame); // cannot achieve smooth scrolling with this
+	if (eventType == "frame") {
+	    window.requestAnimationFrame(requestFrame);
+	}
     }
 
     // Recalculate everything - scroll/resize hook
@@ -426,15 +429,18 @@
     $window
 	.on("resize.parallax", function() {
 	    viewHeight = $window.height();
-	})
-	.on("scroll.parallax resize.parallax", function() {
-	    scrollingOn();
-	    requestFrame();
-	    clearTimeout(scrolling);
-	    scrolling = setTimeout(scrollingOff, 100);
-	})
-	.on("load.parallax", requestFrame)
-    ;
+	});
+
+    if (eventType == 'scroll') {
+	$window
+	    .on("wheel.parallax scroll.parallax resize.parallax", function() {
+		scrollingOn();
+		requestFrame();
+		clearTimeout(scrolling);
+		scrolling = setTimeout(scrollingOff, 100);
+	    })
+	    .on("load.parallax", requestFrame);
+    }
     $(requestFrame);
 
 })(jQuery, window);
