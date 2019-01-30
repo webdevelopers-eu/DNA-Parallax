@@ -27,31 +27,40 @@
 (function($, window) {
     var $window = $(window);
     var allRules = {};
-
-    // Hook on scroll
     var lock = 0;
     var viewTop = $window.scrollTop();
     var viewHeight = $window.height();
     var viewTopLast = viewTop;
+    var scrolling = false;
 
+    // Hook on scroll
     $window
-	.on("resize.parallax", function() {viewHeight = $window.height();})
-	// .on("scroll.parallax resize.parallax", requestFrame)
+	.on("resize.parallax", function() {
+	    viewHeight = $window.height();
+	})
+	.on("scroll.parallax resize.parallax", function() {
+	    scrollingOn();
+	    requestFrame();
+	    clearTimeout(scrolling);
+	    scrolling = setTimeout(scrollingOff, 100);
+	})
     ;
-    requestFrame();
+    // requestFrame();
 
     function requestFrame() {
 	if (lock++) return; // prevent simultaneous recalcs
-	animateFrame();
+	while (scrolling && animateFrame());
 	lock = 0;
-	window.requestAnimationFrame(requestFrame);
+	// window.requestAnimationFrame(requestFrame); // cannot achieve smooth scrolling with this
     }
 
     // Recalculate everything - scroll/resize hook
     function animateFrame() {
 	var viewTopCurr = $window.scrollTop();
 
-	if (viewTopCurr == viewTopLast) return;
+	if (viewTopCurr == viewTopLast) {
+	    return false;
+	}
 
 	viewTopLast = viewTop;
 	viewTop = viewTopCurr;
@@ -66,6 +75,16 @@
 	    .not($onscreen)
 	    .not(viewTop - viewTopLast > 0 ? "[parallax-progress='100%']" : "[parallax-progress='0%']" )
 	    .parallax();
+
+	return true;
+    }
+
+    function scrollingOff() {
+	scrolling = false;
+    }
+
+    function scrollingOn() {
+	scrolling = true;
     }
 
     // jQuery plugin - progress animation or force reinitialization
