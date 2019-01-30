@@ -29,8 +29,7 @@ The only reliable workaround for supersmooth scroll-linked animations is to use 
 
 You can also consider CSS to hide elements that are off-screen.
 ```css
-[parallax][parallax-progress="0%"],
-[parallax][parallax-progress="100%"] {
+[parallax][parallax-status="off"] {
     display: none !imortant;
 }
 ```
