@@ -31,21 +31,7 @@
     var viewTop = $window.scrollTop();
     var viewHeight = $window.height();
     var viewTopLast = viewTop;
-    var scrolling = false;
-
-    // Hook on scroll
-    $window
-	.on("resize.parallax", function() {
-	    viewHeight = $window.height();
-	})
-	.on("scroll.parallax resize.parallax", function() {
-	    scrollingOn();
-	    requestFrame();
-	    clearTimeout(scrolling);
-	    scrolling = setTimeout(scrollingOff, 100);
-	})
-    ;
-    // requestFrame();
+    var scrolling = true;
 
     function requestFrame() {
 	if (lock++) return; // prevent simultaneous recalcs
@@ -57,8 +43,9 @@
     // Recalculate everything - scroll/resize hook
     function animateFrame() {
 	var viewTopCurr = $window.scrollTop();
+	var $all = $('[parallax]');
 
-	if (viewTopCurr == viewTopLast) {
+	if (viewTopCurr == viewTopLast && !$all.is(':not([parallax-status])') /* need to initialize new anim */) {
 	    return false;
 	}
 
@@ -66,8 +53,7 @@
 	viewTop = viewTopCurr;
 
 	// Do those currently visible
-	var $all = $('[parallax]');
-	var $onscreen = $all.not('[parallax-progress="0%"], [parallax-progress="100%"]');
+	var $onscreen = $all.not('[parallax-status="off"]');
 	$onscreen.parallax();
 
 	// If scrolling down then don't consider animations already scrolled up, if scrolling up ignore animations scrolled down...
@@ -165,7 +151,14 @@
     /**
      * Current animation progress state.
      *
-     * @var float (1 = 100%)
+     * @var float can be <0 or >1
+     */
+    DnaParallax.prototype.realProgress = null;
+
+    /**
+     * Current animation progress state.
+     *
+     * @var float (1 = 100%) from range <0;1>
      */
     DnaParallax.prototype.progress = null;
 
@@ -180,7 +173,7 @@
 	var style = {};
 	for (var i = 0; i < this.anim.props.length; i++) {
 	    var prop = this.anim.props[i];
-	    style[prop.name] = prop.get(this.progress);
+	    style[prop.name] = prop.get(this.realProgress);
 	}
 
 	this.$element.css(style);
@@ -213,14 +206,20 @@
 	this.progress = (viewTop - progress0) / (progress100 - progress0);
 
 	// Round to 4 digits, should be enough for smoothness and avoids loooong floats in debug
-	this.progress = Math.round(this.progress * 1000000) / 1000000;
+	this.realProgress = Math.round(this.progress * 1000000) / 1000000;
+	this.progress = this.realProgress;
 
 	if (this.progress > 1) this.progress = 1;
 	else if (this.progress < 0) this.progress = 0;
 
-	var progress = (Math.round(this.progress * 10000) / 100) + "%";
-	this.$element.attr('parallax-progress', progress);
-	this.$container.attr('parallax-progress', progress);
+	var attrs = {
+	    "parallax-progress": Math.floor(this.progress * 100) + "%",
+	    "parallax-approx": Math.floor(this.progress * 20) * 5 + "f " + Math.floor(this.progress * 10) * 10 + "d",
+	    "parallax-status": this.realProgress < 0 || this.realProgress > 1 ? 'off' : 'on'
+	};
+
+	this.$element.attr(attrs);
+	this.$container.attr(attrs);
     };
 
 
@@ -388,6 +387,10 @@
     DnaProp.prototype.get = function (progress) {
 	var i, before, after;
 
+	if (progress > 1 || progress < 0) {
+	    return ''; // Unset setting because it is outside of the range.
+	}
+
 	// Find closest keyframe definitions
 	for (i = 0; i < this.list.length; i++) {
 	    var kf = this.list[i];
@@ -417,5 +420,21 @@
 
 	return template;
     };
+
+    //------------------------------------------------------------------------
+    // Hook on scroll
+    $window
+	.on("resize.parallax", function() {
+	    viewHeight = $window.height();
+	})
+	.on("scroll.parallax resize.parallax", function() {
+	    scrollingOn();
+	    requestFrame();
+	    clearTimeout(scrolling);
+	    scrolling = setTimeout(scrollingOff, 100);
+	})
+	.on("load.parallax", requestFrame)
+    ;
+    $(requestFrame);
 
 })(jQuery, window);
