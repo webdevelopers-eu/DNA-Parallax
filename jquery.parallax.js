@@ -32,7 +32,7 @@
     var viewHeight = $window.height();
     var viewTopLast = viewTop;
     var scrolling = true;
-    var eventType = "scroll"; // EXPERIMENTS: "scroll" | "frame" use on-scroll event or requestAnimationFrame, visually better results with "scroll" in FF.
+    var eventType = "frame"; // EXPERIMENTS: "scroll" | "frame" use on-scroll event or requestAnimationFrame, visually better results with "scroll" in FF?
 
     function requestFrame() {
 	if (lock++) return; // prevent simultaneous recalcs
