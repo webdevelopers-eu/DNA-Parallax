@@ -431,8 +431,9 @@
 
 	var template =	before.template;
 	var ratio = (progress - before.progress) / (after.progress - before.progress);
+	var maxIndex = Math.max(after.values.length, before.values.length);
 
-	for (i = 0; i < before.values.length; i++) {
+	for (i = 0; i < maxIndex; i++) {
 	    var val1 = before.values[i];
 	    var val2 = after.values[i];
 
