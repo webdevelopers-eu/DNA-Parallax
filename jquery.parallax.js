@@ -93,7 +93,7 @@
 		try {
 		    this.parallax = new DnaParallax(this);
 		} catch (e) {
-		    if (!$(this).hasAttr('parallax-error')) { // To avoid flooding console with errors. Log first only.
+		    if (!$(this).attr('parallax-error')) { // To avoid flooding console with errors. Log first only.
 			console.error("DNA Parallax Exception: " + e.message);
 		    }
 		    $(this).attr({
