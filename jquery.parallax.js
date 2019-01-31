@@ -433,10 +433,37 @@
 	var ratio = (progress - before.progress) / (after.progress - before.progress);
 
 	for (i = 0; i < before.values.length; i++) {
-	    template = template.replace('@', before.values[i] + (after.values[i] - before.values[i]) * ratio);
+	    var val1 = before.values[i];
+	    var val2 = after.values[i];
+
+	    if (isNaN(val1)) {
+		val1 = this.fixValue(i) || val2;
+	    }
+	    if (isNaN(val2)) {
+		val2 = this.fixValue(i) || val1;
+	    }
+
+	    template = template.replace('@', val1 + (val2 - val1) * ratio);
 	}
 
 	return template;
+    };
+
+    /**
+     *
+     * Try to fix missing/not matching values
+     *
+     * @access private
+     * @param int index what position of the value is missing (0-based)
+     * @return float new fixed value
+     */
+    DnaProp.prototype.fixValue = function (index) {
+	if (this.name.match(/color$/) && index == 3) {
+	    // rgba(r, g, b, 1) gets converted to rgb(r, g, b) and "1" is left out
+	    return 1;
+	}
+	// Issue warnings?
+	return undefined;
     };
 
     //------------------------------------------------------------------------
