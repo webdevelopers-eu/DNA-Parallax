@@ -16,6 +16,17 @@ The best way is to look at `example.html` file. It is very simple and self-expla
 
 [See for yourself on CodePen!](https://codepen.io/webdevelopers/full/PVGKKO) You can have a quick look at [HTML source](https://codepen.io/webdevelopers/pen/PVGKKO.html) and [CSS code](https://codepen.io/webdevelopers/pen/PVGKKO.css) used to create this demo.
 
+## Syntax
+
+Animated element:
+```
+<element parallax="CSS_KEYFRAMES_NAME [CSS_KEYFRAMES_NAME ...]" [parallax-container="CSS_SELECTOR"]>...</element>
+```
+Container that determines progress:
+```
+<element role="parallax-container">...</element>
+```
+
 ## Limitations
 * **units** CSS animated properties must have same units. E.g. you cannot use `transition: rotate(360`**deg**`)` in one keyframe and `transition: rotate(9`**rad**`)` in next.
 * **IE** is not supported (yet). But it should be easy to create standard CSS fallback styles and all animation-related CSS styles put into `0%` key of the `@keyframe` - they will overwrite CSS defaults if browser is supported...
@@ -30,7 +41,7 @@ The only reliable workaround for supersmooth scroll-linked animations is to use 
 You can also consider CSS to hide elements that are off-screen.
 ```css
 [parallax][parallax-status="off"] {
-    display: none !imortant;
+	display: none !imortant;
 }
 ```
 

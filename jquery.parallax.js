@@ -11,7 +11,7 @@
  * SYNTAX:
  *
  * <element role="parallax-container ...">
- *   <element parallax="KEYFRAMES_NAME [KEYFRAMES_NAME ...]">...</element>
+ *   <element parallax="KEYFRAMES_NAME [KEYFRAMES_NAME ...]" [parallax-container="CSS_SELECTOR"]>...</element>
  * </element>
  *
  * - "parallax-container" - parent with this role will be used to calculate animation progress. If not found then @parallax element is used instead.
@@ -32,7 +32,7 @@
     var viewHeight = $window.height();
     var viewTopLast = viewTop;
     var scrolling = true;
-    var eventType = "frame"; // EXPERIMENTS: "scroll" | "frame" use on-scroll event or requestAnimationFrame, visually better results with "scroll" in FF?
+    var eventType = "frame"; //  "scroll" | "frame" use on-scroll event or requestAnimationFrame
 
     function requestFrame() {
 	if (lock++) return; // prevent simultaneous recalcs
@@ -93,8 +93,13 @@
 		try {
 		    this.parallax = new DnaParallax(this);
 		} catch (e) {
-		    $(this).attr('parallax-status', 'error: ' + e.message);
-		    console.error("DNA Parallax Exception: " + e.message);
+		    if (!$(this).hasAttr('parallax-error')) { // To avoid flooding console with errors. Log first only.
+			console.error("DNA Parallax Exception: " + e.message);
+		    }
+		    $(this).attr({
+			'parallax-status': 'error',
+			'parallax-error': e.message
+		    });
 		    return;
 		}
 		$(this).attr('parallax-status', 'ready');
@@ -114,8 +119,18 @@
 	this.$element = $(element);
 
 	// Find container
-	this.$container = this.$element.closest('[role~="parallax-container"]');
-	if (!this.$container.length) this.$container = this.$element;
+	var containerSelector = $.trim(this.$element.attr('parallax-container'));
+	if (containerSelector) { // Use @parallax-container selector to bind to container
+	    this.$container = $(containerSelector);
+
+	    if (!this.$container.length) { // Exception - container not found
+		this.$container = this.$element;
+		throw new Error("Cannot find associated container \"" + containerSelector + "\"");
+	    }
+	} else { // Use parent's @role attribute or self
+	    this.$container = this.$element.closest('[role~="parallax-container"]');
+	    if (!this.$container.length) this.$container = this.$element;
+	}
 
 	// Parse settings
 	this.animNames = $.trim(this.$element.attr('parallax')).split(/\s+/);
