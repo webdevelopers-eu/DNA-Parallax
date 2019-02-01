@@ -11,7 +11,7 @@
  * SYNTAX:
  *
  * <element role="parallax-container ...">
- *   <element parallax="KEYFRAMES_NAME [KEYFRAMES_NAME ...]" [parallax-container="CSS_SELECTOR"]>...</element>
+ *   <element parallax="KEYFRAMES_NAME[:reverse] [KEYFRAMES_NAME[:reverse] ...]" [parallax-container="CSS_SELECTOR"]>...</element>
  * </element>
  *
  * - "parallax-container" - parent with this role will be used to calculate animation progress. If not found then @parallax element is used instead.
@@ -257,7 +257,8 @@
 
 	// Find animation object
 	for (k = 0; k < names.length; k++) {
-	    var name = names[k];
+	    var tokens = names[k].split(':');
+	    var name = tokens.shift();
 	    var rule = null;
 
 	    if (allRules[name]) { // Already found
@@ -276,7 +277,7 @@
 			    }
 			}
 		    } catch (e) { // may be triggered by forbidden access to third-party CSS
-			debugger;
+
 			if (e.code == 18) { // Ignore - quite common with third-parth CSS message: "Failed to read the 'cssRules' property from 'CSSStyleSheet': Cannot access rules"
 			    console.log("DNA Parallax: Cannot read CSS rules, add attribute crossorigin=\"anonymous\" on <link> tag if you store your @keyframes definitions in following file: " + sheet.href);
 			} else {
@@ -290,7 +291,7 @@
 		throw new Error("Cannot find animation " + JSON.stringify(name));
 	    }
 
-	    this.parseRule(rule);
+	    this.parseRule(rule, tokens);
 	}
     }
 
@@ -319,15 +320,21 @@
     /**
      *
      * @param CSSKeyframesRule rule parse keyframes into props
+     * @param [] tokens that follow the animation name: e.g. ["reverse"] for "my-anim:reverse" animation name.
      * @return void
      */
-    DnaAnim.prototype.parseRule = function(rule) {
+    DnaAnim.prototype.parseRule = function(rule, tokens) {
 	this.rules.push(rule);
+	var reverse = tokens.indexOf('reverse') != -1;
 
 	// Extract keyframe styles
 	for (i = 0; i < rule.cssRules.length; i++) {
 	    var kf = rule.cssRules[i]; // @type CSSKeyframesRule
 	    var progress = parseFloat(kf.keyText) / 100;
+
+	    if (reverse) { // :reverse followed the animation name.
+		progress = 1 - progress;
+	    }
 
 	    for (j=0; j < kf.style.length; j++) {
 		var n = kf.style[j];

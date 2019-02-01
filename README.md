@@ -20,7 +20,7 @@ The best way is to look at `example.html` file. It is very simple and self-expla
 
 Animated element:
 ```
-<element parallax="CSS_KEYFRAMES_NAME [CSS_KEYFRAMES_NAME ...]" [parallax-container="CSS_SELECTOR"]>...</element>
+<element parallax="CSS_KEYFRAMES_NAME[:reverse] [CSS_KEYFRAMES_NAME[:reverse] ...]" [parallax-container="CSS_SELECTOR"]>...</element>
 ```
 Container that determines progress:
 ```
