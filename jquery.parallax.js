@@ -11,9 +11,13 @@
  * SYNTAX:
  *
  * <element role="parallax-container ...">
- *   <element parallax="KEYFRAMES_NAME[:reverse] [KEYFRAMES_NAME[:reverse] ...]" [parallax-container="CSS_SELECTOR"]>...</element>
+ *   <element parallax="KEYFRAMES_NAME[:MODIFIERS] [KEYFRAMES_NAME[:MODIFIERS] ...]" [parallax-container="CSS_SELECTOR"]>...</element>
  * </element>
  *
+ * - MODIFIERS - list of ':' separated timeline modifiers. Supported:
+ *    - "reverse" - reverse the animation. E.g. "0%" will become "100%", "20%" => "80%" etc.
+ *    - "shift({NUM}%)" - shift time forward/backward by given amount of %
+ *    - "scale({FLOAT})" - shrink, lengthen animation. Each "%" will be multiplied by given float constant.
  * - "parallax-container" - parent with this role will be used to calculate animation progress. If not found then @parallax element is used instead.
  * - KEYFRAMES_NAME - name of the @keyframes CSS at-rule definning animation. Multiple @keyframes will be joined into one animation.
  *
@@ -133,8 +137,7 @@
 	}
 
 	// Parse settings
-	this.animNames = $.trim(this.$element.attr('parallax')).split(/\s+/);
-	this.anim = new DnaAnim(this.animNames);
+	this.anim = new DnaAnim(this.$element.attr('parallax'));
     }
 
     /**
@@ -151,13 +154,6 @@
      * @var jQuery
      */
     DnaParallax.prototype.$container = null;
-
-    /**
-     * Animation name as specified by @parallax attribute.
-     *
-     * @var [] of @keyframes-defined animation names
-     */
-    DnaParallax.prototype.animNames = null;
 
     /**
      * Object with animation settings.
@@ -246,10 +242,13 @@
     /**
      * Animation settings.
      *
-     * @param string name CSS animation name
+     * @param string parallaxNames content of "parallax" attribute on the element
      */
-    function DnaAnim(names) {
+    function DnaAnim(parallaxNames) {
 	var i, j, k;
+
+	parallaxNames = parallaxNames.replace(/\s*([,(:])\s*/g, '$1'); // Remove spaces in brackets and such
+	var names = $.trim(parallaxNames).split(/\s+/);
 
 	this.props = [];
 	this.rules = [];
@@ -257,9 +256,14 @@
 
 	// Find animation object
 	for (k = 0; k < names.length; k++) {
-	    var tokens = names[k].split(':');
-	    var name = tokens.shift();
+	    if (names[k].match(/:debugger/)) {
+		debugger;
+		continue;
+	    }
+
 	    var rule = null;
+	    var modifiers = names[k].split(':');
+	    var name = modifiers.shift();
 
 	    if (allRules[name]) { // Already found
 		rule = allRules[name];
@@ -291,7 +295,7 @@
 		throw new Error("Cannot find animation " + JSON.stringify(name));
 	    }
 
-	    this.parseRule(rule, tokens);
+	    this.parseRule(rule, modifiers);
 	}
     }
 
@@ -318,31 +322,46 @@
     DnaAnim.prototype.rules = null;
 
     /**
+     * Parse CSSKeyframesRule into array for easier processing.
      *
      * @param CSSKeyframesRule rule parse keyframes into props
-     * @param [] tokens that follow the animation name: e.g. ["reverse"] for "my-anim:reverse" animation name.
+     * @param [] modifiers that follow the animation name: e.g. ["reverse", "shift(10%)", "scale(1.3,2)"] for "my-anim:reverse:shift(10%):scale(1.3,2)" animation name.
      * @return void
      */
-    DnaAnim.prototype.parseRule = function(rule, tokens) {
+    DnaAnim.prototype.parseRule = function(rule, modifiers) {
 	this.rules.push(rule);
-	var reverse = tokens.indexOf('reverse') != -1;
+
+	// Split modifiers in subarrays with separated arguments: "scale(1.3,2)" => ["scale", "1.3", "2"]
+	modifiers = modifiers.map(function(mod) {
+	    return $.trim(mod.replace(/[,()]+/g, ' ')).split(/\s+/);
+	});
 
 	// Extract keyframe styles
-	for (i = 0; i < rule.cssRules.length; i++) {
-	    var kf = rule.cssRules[i]; // @type CSSKeyframesRule
+	for (var ruleIdx = 0; ruleIdx < rule.cssRules.length; ruleIdx++) {
+	    var kf = rule.cssRules[ruleIdx]; // @type CSSKeyframesRule
 	    var progress = parseFloat(kf.keyText) / 100;
 
-	    if (reverse) { // :reverse followed the animation name.
-		progress = 1 - progress;
+	    // Apply modifiers
+	    for (var modIdx = 0; modIdx < modifiers.length; modIdx++) {
+		var mod = modifiers[modIdx];
+		switch (mod[0]) {
+		case "reverse": progress = 1 - progress; break;
+		case "shift": progress += parseFloat(mod[1] || 0) / 100; break;
+		case "scale": progress *= parseFloat(mod[1] || 1); break;
+		case "debugger": /*debugger; */ break;
+		default: console.error("Unknown modifier \"" + mod[0] + "\"", modifiers);
+		}
 	    }
 
-	    for (j=0; j < kf.style.length; j++) {
-		var n = kf.style[j];
-		if (!this.namedProps[n]) {
-		    this.namedProps[n] = new DnaProp(n);
-		    this.props.push(this.namedProps[n]);
+	    console.log("DNA Parallax: Parsed " + progress + " " + kf.cssText, modifiers);
+
+	    for (var styleIdx = 0; styleIdx < kf.style.length; styleIdx++) {
+		var propName = kf.style[styleIdx];
+		if (!this.namedProps[propName]) {
+		    this.namedProps[propName] = new DnaProp(propName);
+		    this.props.push(this.namedProps[propName]);
 		}
-		this.namedProps[n].add(progress, kf.style[n]);
+		this.namedProps[propName].add(progress, kf.style[propName]);
 	    }
 	}
 
