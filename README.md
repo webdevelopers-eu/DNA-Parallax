@@ -20,12 +20,17 @@ The best way is to look at `example.html` file. It is very simple and self-expla
 
 Animated element:
 ```
-<element parallax="CSS_KEYFRAMES_NAME[:reverse] [CSS_KEYFRAMES_NAME[:reverse] ...]" [parallax-container="CSS_SELECTOR"]>...</element>
+<element parallax="CSS_KEYFRAMES_NAME[:MODIFIER] [CSS_KEYFRAMES_NAME[:MODIFIER] ...]" [parallax-container="CSS_SELECTOR"]>...</element>
 ```
 Container that determines progress:
 ```
 <element role="parallax-container">...</element>
 ```
+
+Supported modifiers:
+* **reverse** - play animation backwords. E.g. ```parallax="fly-in-top:reverse"``` will fly out up.
+* **shift(n%)** - delay or speed up start of the animation. E.g. ```parallax="fly-in-top:shift(10%)``` if animation starts at 0% this will make it start at 10%.
+* **scale(n%)** - delay or speed up start of the animation. E.g. ```parallax="fly-in-top:scale(0.5)``` if animation starts at 50% and ends at 100% it will make it start at 25% and finish at 50%.
 
 ## Limitations
 * **units** CSS animated properties must have same units. E.g. you cannot use `transition: rotate(360`**deg**`)` in one keyframe and `transition: rotate(9`**rad**`)` in next.
