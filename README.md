@@ -12,9 +12,7 @@ Animation starts at
 * **50%** container is in the very middle of the viewport
 * **100%** container is just above the viewport
 
-The best way is to look at `example.html` file. It is very simple and self-explanatory.
-
-[See for yourself on CodePen!](https://codepen.io/webdevelopers/full/PVGKKO) You can have a quick look at [HTML source](https://codepen.io/webdevelopers/pen/PVGKKO.html) and [CSS code](https://codepen.io/webdevelopers/pen/PVGKKO.css) used to create this demo.
+The best way is to look at [tutorial](https://webdevelopers-eu.github.io/DNA-Parallax/tutorial/) or experiment with editable [CodePen](https://codepen.io/webdevelopers/full/PVGKKO) examples.
 
 ## Syntax
 
