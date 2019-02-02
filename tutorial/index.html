@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"/>
+	<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"/> -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="../jquery.parallax.js"></script>
 
 	<!-- CSS is embeded in this example to allow view of this file localy without webserver to avoid CORS security issues -->
 	<style>
 	    html {
+		scroll-behavior: smooth;
 		box-sizing: border-box;
 		font-family: sans-serif;
 		box-sizing: border-box;
@@ -95,9 +96,39 @@
 		flex: none;
 	    }
 
+	    .paging {
+		position: fixed;
+		right: 10px;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		font-size: 2em;
+	    }
+
+	    .paging a {
+		text-decoration: none;
+		color: black;
+	    }
+
 	    /* We can hide whole content when it is off-screen = animation status is "off" */
 	    [parallax~="anim-stage"][parallax-status="off"] {
 		display: none;
+	    }
+
+	    @keyframes star {
+		0% {
+		    color: rgb(0, 0, 0);
+		    transform: scale(1) rotate(0deg);
+		}
+		50% {
+		    color: rgb(255, 0, 0);
+		    transform: scale(2) rotate(720deg);
+		}
+		100% {
+		    color: rgb(0, 0, 0);
+		    transform: scale(1) rotate(1440deg);
+		}
 	    }
 
 	    /* Slide stage up nicely, and slide out after while */
@@ -235,7 +266,7 @@
 	    </p>
 	</div>
 
-	<section role="parallax-container">
+	<section id="s1" role="parallax-container">
 	    <div parallax="anim-stage">
 		Content...
 	    </div>
@@ -264,7 +295,7 @@
 	    </pre>
 	</div>
 
-	<section role="parallax-container">
+	<section id="s2" role="parallax-container">
 	    <div parallax="anim-stage">
 		<div class="box" parallax="fly-in-left"></div>
 		<div class="box" parallax="fly-in-right"></div>
@@ -306,7 +337,7 @@
 	    </pre>
 	</div>
 
-	<section role="parallax-container">
+	<section id="s3" role="parallax-container">
 	    <div parallax="anim-stage">
 		<div class="box" parallax="fly-in-left fly-in-left:reverse"></div>
 		<div class="box" parallax="fly-in-right fly-in-right:reverse"></div>
@@ -341,7 +372,7 @@
 
 	</div>
 
-	<section role="parallax-container">
+	<section id="s4" role="parallax-container">
 	    <div parallax="anim-stage">
 		<div class="row">
 		    <div class="box" parallax="fly-in-left:shift(15%)  fly-in-left:reverse:shift(-5%)"></div>
@@ -418,14 +449,60 @@
 	    </pre>
 	</div>
 
-	<section role="parallax-container">
+	<section id="s5" role="parallax-container">
 	    <div parallax="anim-stage sky">
 		<div class="box" parallax="crazy"></div>
 	    </div>
 	</section>
 
+	<div id ="s6" class="help" style="height: 100vh">
+	    <h2>Paging</h2>
 
-	<div style="height: 100vh;"></div>
+	    <p>
+		You can see the paging on the right side. Trick is
+		very easy. We want to animate each gear symbol based
+		on associted <i>parallax container</i> position. We
+		can bind any animation to position of any other
+		element using <code>parallax-container</code> CSS selector.
+	    </p>
+
+	    <pre class="html">
+		&lt;div class=&quot;paging&quot;&gt;
+		    &lt;a href=&quot;#s1&quot; parallax=&quot;star&quot; parallax-container=&quot;#s1&quot;&gt;⚙&lt;/a&gt;
+		    &lt;a href=&quot;#s2&quot; parallax=&quot;star&quot; parallax-container=&quot;#s2&quot;&gt;⚙&lt;/a&gt;
+		    &lt;a href=&quot;#s3&quot; parallax=&quot;star&quot; parallax-container=&quot;#s3&quot;&gt;⚙&lt;/a&gt;
+		    &lt;a href=&quot;#s4&quot; parallax=&quot;star&quot; parallax-container=&quot;#s4&quot;&gt;⚙&lt;/a&gt;
+		    &lt;a href=&quot;#s5&quot; parallax=&quot;star&quot; parallax-container=&quot;#s5&quot;&gt;⚙&lt;/a&gt;
+		&lt;/div&gt;
+	    </pre>
+
+	    <pre class="css">
+		@keyframes star {
+		    0% {
+			color: rgb(0, 0, 0);
+			transform: scale(1) rotate(0deg);
+		    }
+		    50% {
+			color: rgb(255, 0, 0);
+			transform: scale(2) rotate(720deg);
+		    }
+		    100% {
+			color: rgb(0, 0, 0);
+			transform: scale(1) rotate(1440deg);
+		    }
+		}
+	    </pre>
+
+	</div>
+
+	<div class="paging">
+	    <a href="#s1" parallax="star" parallax-container="#s1">⚙</a>
+	    <a href="#s2" parallax="star" parallax-container="#s2">⚙</a>
+	    <a href="#s3" parallax="star" parallax-container="#s3">⚙</a>
+	    <a href="#s4" parallax="star" parallax-container="#s4">⚙</a>
+	    <a href="#s5" parallax="star" parallax-container="#s5">⚙</a>
+	    <a href="#s6" parallax="star" parallax-container="#s6">⚙</a>
+	</div>
 
     </body>
 </html>
