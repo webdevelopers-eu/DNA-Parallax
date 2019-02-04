@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+	<title>DNA Parallax / CSS Keyframes Scroll Animator</title>
+	<meta name="description" content="Make any CSS @keyframes animation scroll-linked. Any standard CSS animation will play as you scroll. Parallax effects the way web designers imagined it - you don't need to write a single Javascript line."/>
+	<link rel="license" href="LICENSE"/>
+	<link rel="next" href="https://github.com/webdevelopers-eu/dna-parallax/"/>
+
 	<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"/> -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="../jquery.parallax.js"></script>
@@ -283,10 +288,26 @@
 	    .schema.box-200 .schema-container {height: 200%;}
 	    .schema.box-200 .schema-container::before {content: "height: 200vh";}
 
+	    .github a {
+		position: fixed;
+		right: 0px;
+		top: 0px;
+		background-color: #edf5fa;
+		padding: 0.4em 1em;
+		z-index: 10;
+		text-transform: uppercase;
+		font-size: 0.8em;
+		text-decoration: none;
+		font-weight: bold;
+	    }
+
 	</style>
     </head>
 
     <body>
+	<div class="github">
+	    <a title="DNA Parallax / CSS Keyframes Scroll Animator" href="https://github.com/webdevelopers-eu/DNA-Parallax/">Download from GitHub</a>
+	</div>
 	<div class="help">
 	    <h1>DNA Parallax Tutorial</h1>
 	    <p>Every example uses simple common layout with associated CSS:</p>
