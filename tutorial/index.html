@@ -116,7 +116,7 @@
 
 	    [parallax~="anim-stage-smooth"]::before, [parallax~="anim-stage"]::before {
 		content: attr(parallax-progress);
-		color: white;
+		color: silver;
 		font-weight: bold;
 		font-size: 2em;
 		position: absolute;
@@ -141,12 +141,26 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		font-size: 2em;
 	    }
 
 	    .paging a {
+		height: 20px;
+		width: 20px;
+		border-radius: 10px;
+		background-color: black;
+		font-size: 8px;
+		line-height: 20px;
+		margin: 5px 0px;
+
+		text-align: center;
 		text-decoration: none;
-		color: black;
+		color: white;
+		display: block;
+		position: relative;
+	    }
+
+	    .paging a[parallax-status="on"]::before {
+		content: attr(parallax-progress);
 	    }
 
 	    /* We can hide whole content when it is off-screen = animation status is "off" */
@@ -154,17 +168,17 @@
 		display: none;
 	    }
 
-	    @keyframes star {
+	    @keyframes paging-button {
 		0% {
-		    color: rgb(0, 0, 0);
+		    background-color: rgb(0, 0, 0);
 		    transform: scale(1) rotate(0deg);
 		}
 		50% {
-		    color: rgb(255, 0, 0);
+		    background-color: rgb(255, 0, 0);
 		    transform: scale(2) rotate(720deg);
 		}
 		100% {
-		    color: rgb(0, 0, 0);
+		    background-color: rgb(0, 0, 0);
 		    transform: scale(1) rotate(1440deg);
 		}
 	    }
@@ -587,7 +601,7 @@
 	    </div>
 	</section>
 
-	<div id ="s6" class="help" style="height: 100vh">
+	<div id ="s6" class="help">
 	    <h2>Paging</h2>
 
 	    <p>
@@ -600,26 +614,26 @@
 
 	    <pre class="html">
 		&lt;div class=&quot;paging&quot;&gt;
-		    &lt;a href=&quot;#s1&quot; parallax=&quot;star&quot; parallax-container=&quot;#s1&quot;&gt;⚙&lt;/a&gt;
-		    &lt;a href=&quot;#s2&quot; parallax=&quot;star&quot; parallax-container=&quot;#s2&quot;&gt;⚙&lt;/a&gt;
-		    &lt;a href=&quot;#s3&quot; parallax=&quot;star&quot; parallax-container=&quot;#s3&quot;&gt;⚙&lt;/a&gt;
-		    &lt;a href=&quot;#s4&quot; parallax=&quot;star&quot; parallax-container=&quot;#s4&quot;&gt;⚙&lt;/a&gt;
-		    &lt;a href=&quot;#s5&quot; parallax=&quot;star&quot; parallax-container=&quot;#s5&quot;&gt;⚙&lt;/a&gt;
+		    &lt;a href=&quot;#s1&quot; parallax=&quot;paging-button&quot; parallax-container=&quot;#s1&quot;&gt;⚙&lt;/a&gt;
+		    &lt;a href=&quot;#s2&quot; parallax=&quot;paging-button&quot; parallax-container=&quot;#s2&quot;&gt;⚙&lt;/a&gt;
+		    &lt;a href=&quot;#s3&quot; parallax=&quot;paging-button&quot; parallax-container=&quot;#s3&quot;&gt;⚙&lt;/a&gt;
+		    &lt;a href=&quot;#s4&quot; parallax=&quot;paging-button&quot; parallax-container=&quot;#s4&quot;&gt;⚙&lt;/a&gt;
+		    &lt;a href=&quot;#s5&quot; parallax=&quot;paging-button&quot; parallax-container=&quot;#s5&quot;&gt;⚙&lt;/a&gt;
 		&lt;/div&gt;
 	    </pre>
 
 	    <pre class="css">
-		@keyframes star {
+		@keyframes paging-anim {
 		    0% {
-			color: rgb(0, 0, 0);
+			background-color: rgb(0, 0, 0);
 			transform: scale(1) rotate(0deg);
 		    }
 		    50% {
-			color: rgb(255, 0, 0);
+			background-color: rgb(255, 0, 0);
 			transform: scale(2) rotate(720deg);
 		    }
 		    100% {
-			color: rgb(0, 0, 0);
+			background-color: rgb(0, 0, 0);
 			transform: scale(1) rotate(1440deg);
 		    }
 		}
@@ -714,14 +728,14 @@
 	<div style="height: 100vh;"></div><!-- scroll spacer -->
 
 	<div class="paging">
-	    <a href="#s1" parallax="star" parallax-container="#s1" title="Start">⚙</a>
-	    <a href="#s2" parallax="star" parallax-container="#s2" title="Fly In &amp; Rotate">⚙</a>
-	    <a href="#s3" parallax="star" parallax-container="#s3" title="Animations Combos and Modifiers">⚙</a>
-	    <a href="#s4" parallax="star" parallax-container="#s4" title="Shifting and Scalling the Timeline">⚙</a>
-	    <a href="#s5" parallax="star" parallax-container="#s5" title="Full Power of CSS">⚙</a>
-	    <a href="#s6" parallax="star" parallax-container="#s6" title="Paging">⚙</a>
-	    <a href="#s7" parallax="star" parallax-container="#s7" title="Understanding Progress Measurement">⚙</a>
-	    <a href="#s8" parallax="star" parallax-container="#s8" title="Becoming a Parallax Container">⚙</a>
+	    <a href="#s1" parallax="paging-button" parallax-container="#s1" title="Start"></a>
+	    <a href="#s2" parallax="paging-button" parallax-container="#s2" title="Fly In &amp; Rotate"></a>
+	    <a href="#s3" parallax="paging-button" parallax-container="#s3" title="Animations Combos and Modifiers"></a>
+	    <a href="#s4" parallax="paging-button" parallax-container="#s4" title="Shifting and Scalling the Timeline"></a>
+	    <a href="#s5" parallax="paging-button" parallax-container="#s5" title="Full Power of CSS"></a>
+	    <a href="#s6" parallax="paging-button" parallax-container="#s6" title="Paging"></a>
+	    <a href="#s7" parallax="paging-button" parallax-container="#s7" title="Understanding Progress Measurement"></a>
+	    <a href="#s8" parallax="paging-button" parallax-container="#s8" title="Becoming a Parallax Container"></a>
 	</div>
 
     </body>
