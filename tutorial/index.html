@@ -227,6 +227,62 @@
 		    background-position: -40vw -40vh;
 		}
 	    }
+
+	    /* Documentation Schema CSS */
+	    .schema {
+		display: flex;
+		justify-content: space-around;
+	    }
+
+	    .schema-viewport {
+		position: relative;
+		width: 160px;
+		height: 120px;
+		outline: 2px solid black;
+		background-color: rgb(200,200,200);
+	    }
+
+	    .schema-viewport::before {
+		content: "screen";
+		color: gray;
+		font-weight: bold;
+		padding: 0.4em 0.5em;
+	    }
+
+	    .schema-container {
+		outline: 2px dotted red;
+		position: absolute;
+		left: 0px;
+		width: 160px;
+		background-color: rgba(200,0,0,0.5);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		color: white;
+		font-weight: bold;
+	    }
+
+	    .schema-container > span::before {
+		content: "progress: ";
+	    }
+
+	    .schema.box-50 .schema-container::before {
+		display: block;
+	    }
+
+	    .schema.box-50 .schema-viewport {margin: 80px 0;}
+	    .schema.box-50 .schema-container {height: 50%;}
+	    .schema.box-50 .schema-container::before {content: "height: 50vh";}
+
+	    .schema.box-100 .schema-viewport {margin: 160px 0;}
+	    .schema.box-100 .schema-container {height: 100%;}
+	    .schema.box-100 .schema-container::before {content: "height: 100vh";}
+
+	    .schema.box-200 .schema-viewport {margin: 320px 0;}
+	    .schema.box-200 .schema-container {height: 200%;}
+	    .schema.box-200 .schema-container::before {content: "height: 200vh";}
+
 	</style>
     </head>
 
@@ -533,13 +589,62 @@
 
 	</div>
 
+	<div id="s7" class="help">
+	    <h2>Understanding Progress Measurement</h2>
+
+	    <p>
+		You can link any <i>parallax</i> animation to a position of any other element relatively to a screen view.
+	    </p>
+
+	    <p>
+		Linked element is called <i>parallax container</i> and is determined as follows.
+	    </p>
+
+	    <ol>
+		<li>If animated element has <code>parallax-container="<var>CSS_SELECTOR</var>"</code> attribute then linked element will be selected by evaluating given CSS selector.</li>
+		<li>If any parent element of animated element or animated element itself has a keyword <code>parallax-container</code> in its <code>role</code> attribute it will be used as <i>parallax container</i>.</li>
+		<li>Otherwise the animated element's position itself will be used as default <i>parallax container</i>.</li>
+	    </ol>
+
+	    <p>
+		The <i>parallax container</i>'s position starts at 0% when it is just bellow visible screen and ends at 100% just above visible screen.
+	    </p>
+
+	    <div class="schema box-50">
+		<div class="schema-viewport"><div class="schema-container" style="top: 100%;"><span>  0%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top:  50%;"><span> 33%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top:  25%;"><span> 50%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top:   0%;"><span> 66%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top: -50%;"><span>100%</span></div></div>
+	    </div>
+
+	    <div class="schema box-100">
+		<div class="schema-viewport"><div class="schema-container" style="top: 100%;"><span>  0%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top:  50%;"><span> 25%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top:   0%;"><span> 50%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top: -50%;"><span> 75%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top:-100%;"><span>100%</span></div></div>
+	    </div>
+
+
+	    <div class="schema box-200">
+		<div class="schema-viewport"><div class="schema-container" style="top: 100%;"><span>  0%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top:   0%;"><span> 33%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top: -50%;"><span> 50%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top:-100%;"><span> 66%</span></div></div>
+		<div class="schema-viewport"><div class="schema-container" style="top:-200%;"><span>100%</span></div></div>
+	    </div>
+
+	</div>
+
 	<div class="paging">
-	    <a href="#s1" parallax="star" parallax-container="#s1">⚙</a>
-	    <a href="#s2" parallax="star" parallax-container="#s2">⚙</a>
-	    <a href="#s3" parallax="star" parallax-container="#s3">⚙</a>
-	    <a href="#s4" parallax="star" parallax-container="#s4">⚙</a>
-	    <a href="#s5" parallax="star" parallax-container="#s5">⚙</a>
-	    <a href="#s6" parallax="star" parallax-container="#s6">⚙</a>
+	    <a href="#s1" parallax="star" parallax-container="#s1" title="Start">⚙</a>
+	    <a href="#s2" parallax="star" parallax-container="#s2" title="Fly In &amp; Rotate">⚙</a>
+	    <a href="#s3" parallax="star" parallax-container="#s3" title="Animations Combos and Modifiers">⚙</a>
+	    <a href="#s4" parallax="star" parallax-container="#s4" title="Shifting and Scalling the Timeline">⚙</a>
+	    <a href="#s5" parallax="star" parallax-container="#s5" title="Full Power of CSS">⚙</a>
+	    <a href="#s6" parallax="star" parallax-container="#s6" title="Paging">⚙</a>
+	    <a href="#s7" parallax="star" parallax-container="#s7" title="Understanding Progress Measurement">⚙</a>
 	</div>
 
     </body>
