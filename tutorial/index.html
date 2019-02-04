@@ -202,12 +202,20 @@
 		}
 	    }
 
+	    .sky-box {
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-image: url("sky.jpg");
+		background-attachment: fixed;
+		background-repeat: repeat;
+	    }
+
 	    @keyframes sky {
 		0% {
-		    background-image: url("sky.jpg");
-		    background-attachment: fixed;
 		    background-position: 0vw 40vh;
-		    background-repeat: repeat;
 		}
 		33% {
 		    background-position: 0vw 0vh;
@@ -421,11 +429,29 @@
 		You are not limited to rotate and translate animations. You can use the full power of CSS animations.
 	    </p>
 	    <pre class="html">
-		&lt;div parallax=&quot;anim-stage sky&quot;&gt;
+		&lt;div class=&quot;sky-box&quot; parallax=&quot;sky&quot;&gt;
 		    &lt;div class=&quot;box&quot; parallax=&quot;crazy&quot;&gt;&lt;/div&gt;
 		&lt;/div&gt;
 	    </pre>
 	    <pre class="css">
+		.sky-box {
+		    width: 100vw;
+		    height: 100vh;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    background-image: url("sky.jpg");
+		    background-attachment: fixed;
+		    background-repeat: repeat;
+		}
+
+		@keyframes sky {
+		    0% {background-position: 0vw 40vh;}
+		    33% {background-position: 0vw 0vh;}
+		    66% {background-position: -40vw 0vh;}
+		    100% {background-position: -40vw -40vh;}
+		}
+
 		@keyframes crazy {
 		    0% {
 			transform: translate(-50vw, -50vh) rotate(-720deg) scale(0.5) skewX(60deg);
@@ -456,24 +482,14 @@
 			border-radius: 60px;
 		    }
 		}
-
-		@keyframes sky {
-		    0% {
-			background-image: url("sky.jpg");
-			background-attachment: fixed;
-			background-position: 0vw 40vh;
-			background-repeat: repeat;
-		    }
-		    33% {background-position: 0vw 0vh;}
-		    66% {background-position: -40vw 0vh;}
-		    100% {background-position: -40vw -40vh;}
-		}
 	    </pre>
 	</div>
 
 	<section id="s5" role="parallax-container">
-	    <div parallax="anim-stage sky">
-		<div class="box" parallax="crazy"></div>
+	    <div parallax="anim-stage">
+		<div class="sky-box" parallax="sky">
+		    <div class="box" parallax="crazy"></div>
+		</div>
 	    </div>
 	</section>
 
