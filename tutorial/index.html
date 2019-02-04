@@ -31,6 +31,16 @@
 		max-width: 15vw;
 		max-height: 15vw;
 		border: 1px solid white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	    }
+
+	    .box::before {
+		content: attr(parallax-progress);
+		color: white;
+		font-weight: bold;
+		font-size: 2em;
 	    }
 
 	    pre {
@@ -74,6 +84,7 @@
 		height: 200vh;
 	    }
 
+
 	    /* Position fixed: ensures smooth animation across browsers */
 	    [parallax~="anim-stage"] {
 		display: flex;
@@ -85,6 +96,17 @@
 		background-color: #EFEFEF;
 		position: fixed;
 		flex-flow: column;
+	    }
+
+	    [parallax~="anim-stage"]::before {
+		content: attr(parallax-progress);
+		color: white;
+		font-weight: bold;
+		font-size: 2em;
+		position: absolute;
+		top: 40px;
+		right: 40px;
+		z-index: 100;
 	    }
 
 	    .row {
