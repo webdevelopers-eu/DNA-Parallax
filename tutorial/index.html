@@ -19,6 +19,17 @@
 		box-sizing: border-box;
 	    }
 
+	    [parallax-error]::after {
+		content: attr(parallax-error);
+		background: red;
+		color: white;
+		position: absolute;
+		z-index: 1000;
+		bottom: 0px;
+		right: 0px;
+		padding: 0.2em 0.4em;
+	    }
+
 	    body {
 		display: flex;
 		flex-direction: column;
@@ -662,6 +673,37 @@
 
 	</div>
 
+	<div class="help">
+	    <h2>Becoming a Parallax Container</h2>
+
+	    <p>
+		As explained above any animated element can became <i>parallax container</i> itself. Animation progress
+		will then depend on animated element's position relative to a screen. You can achieve easily quite
+		interesting effects.
+	    </p>
+
+	    <pre class="html">
+		&lt;div class=&quot;box&quot; parallax=&quot;fly-in-left fly-in-right:reverse&quot; role=&quot;parallax-container&quot;&gt;&lt;/div&gt;
+		&lt;div class=&quot;box&quot; parallax=&quot;fly-in-left fly-in-right:reverse&quot; role=&quot;parallax-container&quot;&gt;&lt;/div&gt;
+		&lt;div class=&quot;box&quot; parallax=&quot;fly-in-left fly-in-right:reverse&quot; role=&quot;parallax-container&quot;&gt;&lt;/div&gt;
+		&lt;div class=&quot;box&quot; parallax=&quot;fly-in-left fly-in-right:reverse&quot; role=&quot;parallax-container&quot;&gt;&lt;/div&gt;
+		&lt;div class=&quot;box&quot; parallax=&quot;fly-in-left fly-in-right:reverse&quot; role=&quot;parallax-container&quot;&gt;&lt;/div&gt;
+		&lt;div class=&quot;box&quot; parallax=&quot;fly-in-left fly-in-right:reverse&quot; role=&quot;parallax-container&quot;&gt;&lt;/div&gt;
+	    </pre>
+	</div>
+
+
+	<section id="s8" role="parallax-container" style="display: flex; align-items: center; flex-direction: column;">
+	    <div class="box" parallax="fly-in-left fly-in-right:reverse" role="parallax-container"></div>
+	    <div class="box" parallax="fly-in-left fly-in-right:reverse" role="parallax-container"></div>
+	    <div class="box" parallax="fly-in-left fly-in-right:reverse" role="parallax-container"></div>
+	    <div class="box" parallax="fly-in-left fly-in-right:reverse" role="parallax-container"></div>
+	    <div class="box" parallax="fly-in-left fly-in-right:reverse" role="parallax-container"></div>
+	    <div class="box" parallax="fly-in-left fly-in-right:reverse" role="parallax-container"></div>
+	</section>
+
+	<div style="height: 100vh;"></div><!-- scroll spacer -->
+
 	<div class="paging">
 	    <a href="#s1" parallax="star" parallax-container="#s1" title="Start">⚙</a>
 	    <a href="#s2" parallax="star" parallax-container="#s2" title="Fly In &amp; Rotate">⚙</a>
@@ -670,6 +712,7 @@
 	    <a href="#s5" parallax="star" parallax-container="#s5" title="Full Power of CSS">⚙</a>
 	    <a href="#s6" parallax="star" parallax-container="#s6" title="Paging">⚙</a>
 	    <a href="#s7" parallax="star" parallax-container="#s7" title="Understanding Progress Measurement">⚙</a>
+	    <a href="#s8" parallax="star" parallax-container="#s8" title="Becoming a Parallax Container">⚙</a>
 	</div>
 
     </body>
