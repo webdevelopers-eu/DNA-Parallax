@@ -353,8 +353,6 @@
 		}
 	    }
 
-	    console.log("DNA Parallax: Parsed " + progress + " " + kf.cssText, modifiers);
-
 	    for (var styleIdx = 0; styleIdx < kf.style.length; styleIdx++) {
 		var propName = kf.style[styleIdx];
 		if (!this.namedProps[propName]) {
