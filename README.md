@@ -34,7 +34,7 @@ The best way is to look at [tutorial](https://webdevelopers-eu.github.io/DNA-Par
 	</style>
   </head>
   <body>
-	<div role="parallax-container" style="height: 100vh; margin: 100vh 0px; overflow-x: hidden;">
+	<div role="parallax-container" style="height: 400vh; margin: 100vh 0px; overflow-x: hidden;">
 	  <h1 parallax="my-animation" style="position: fixed; top: 50vh;">
 		I will roll in and out as parent <code>div</code> scrolls!
 	  </h1>
@@ -42,6 +42,7 @@ The best way is to look at [tutorial](https://webdevelopers-eu.github.io/DNA-Par
   </body>
 </html>
 ```
+Play with this example on [CodePen](https://codepen.io/webdevelopers/pen/XOaoog?editors=1000)!
 
 ## Syntax
 
