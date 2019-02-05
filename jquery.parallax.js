@@ -339,27 +339,31 @@
 	// Extract keyframe styles
 	for (var ruleIdx = 0; ruleIdx < rule.cssRules.length; ruleIdx++) {
 	    var kf = rule.cssRules[ruleIdx]; // @type CSSKeyframesRule
-	    var progress = parseFloat(kf.keyText) / 100;
+	    var progressList = kf.keyText.replace(/[^0-9%.,]+/g, '').split(',');
 
-	    // Apply modifiers
-	    for (var modIdx = 0; modIdx < modifiers.length; modIdx++) {
-		var mod = modifiers[modIdx];
-		switch (mod[0]) {
-		case "reverse": progress = 1 - progress; break;
-		case "shift": progress += parseFloat(mod[1] || 0) / 100; break;
-		case "scale": progress *= parseFloat(mod[1] || 1); break;
-		case "debugger": /*debugger; */ break;
-		default: console.error("Unknown modifier \"" + mod[0] + "\"", modifiers);
-		}
-	    }
+	    for (var progressIdx = 0; progressIdx < progressList.length; progressIdx++) {
+		var progress = parseFloat(progressList[progressIdx]) / 100;
 
-	    for (var styleIdx = 0; styleIdx < kf.style.length; styleIdx++) {
-		var propName = kf.style[styleIdx];
-		if (!this.namedProps[propName]) {
-		    this.namedProps[propName] = new DnaProp(propName);
-		    this.props.push(this.namedProps[propName]);
+		// Apply modifiers
+		for (var modIdx = 0; modIdx < modifiers.length; modIdx++) {
+		    var mod = modifiers[modIdx];
+		    switch (mod[0]) {
+		    case "reverse": progress = 1 - progress; break;
+		    case "shift": progress += parseFloat(mod[1] || 0) / 100; break;
+		    case "scale": progress *= parseFloat(mod[1] || 1); break;
+		    case "debugger": /*debugger; */ break;
+		    default: console.error("Unknown modifier \"" + mod[0] + "\"", modifiers);
+		    }
 		}
-		this.namedProps[propName].add(progress, kf.style[propName]);
+
+		for (var styleIdx = 0; styleIdx < kf.style.length; styleIdx++) {
+		    var propName = kf.style[styleIdx];
+		    if (!this.namedProps[propName]) {
+			this.namedProps[propName] = new DnaProp(propName);
+			this.props.push(this.namedProps[propName]);
+		    }
+		    this.namedProps[propName].add(progress, kf.style[propName]);
+		}
 	    }
 	}
 
