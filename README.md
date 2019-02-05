@@ -19,22 +19,24 @@ The best way is to look at [tutorial](https://webdevelopers-eu.github.io/DNA-Par
 <html>
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-		<script src="jquery.parallax.js"></script>
+		<script src="https://webdevelopers-eu.github.io/DNA-Parallax/jquery.parallax.js"></script>
 		<style>
 			@keyframes my-animation {
 				0%, 100% {
-					tansform: translate(100vw, 100vh) rotate(360deg);
+					transform: translateX(100vw) scale(0.2) rotate(360deg);
 					opacity: 0;
 				}
 				50% {
-					tansform: translate(0vw, 0vh) rotate(360deg);
+					transform: translateX(0vw) scale(1) rotate(0deg);
 					opacity: 1;
 				}
 			}
 		</style>
 	</head>
-	<body style="padding: 0px 100vh;">
-		<div parallax="my-animation">I will fly in and out!</div>
+	<body>
+		<div role="parallax-container" style="height: 100vh; margin: 100vh 0px; overflow-x: hidden;">
+			<h1 parallax="my-animation" style="position: fixed; top: 50vh; display: inline-block;">I will fly in and out!</h1>
+		</div>
 	</body>
 </html>
 ```
