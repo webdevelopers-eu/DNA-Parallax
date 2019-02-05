@@ -7,7 +7,7 @@ Define your CSS `@keyframes` animation and put its name into `parallax` attribut
 
 If you add `role="parallax-container"` on any of element's parent then that element's scrolling position will govern animation timeline progress[[?]](https://webdevelopers-eu.github.io/DNA-Parallax/tutorial/#s7).
 
-Animation starts at
+Animation timeline key points as determined by scrolled container are as follows[[?]](https://webdevelopers-eu.github.io/DNA-Parallax/tutorial/#s7):
 * **0%** container is just bellow the viewport
 * **50%** container is in the very middle of the viewport
 * **100%** container is just above the viewport
