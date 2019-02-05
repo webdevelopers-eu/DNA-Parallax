@@ -3,9 +3,9 @@ Pure CSS-animation defined parallax effect. No Javascript skills required, just 
 
 **There is not much to say. If you know how to use `@keyframes` CSS then you know how to use this.**
 
-Define your CSS `@keyframes` animation and put its name into `parallax` attribute on the element to be animated. You can use multiple white-space separated animation names and they will get merged into one final animation. Possible mergin conflicts will be resolved that later animation's conflicting CSS styles will overwrite previous animation's styles.
+Define your CSS `@keyframes` animation and put its name into `parallax` attribute on the element to be animated. You can use multiple white-space separated animation names and they will get merged into one final animation. 
 
-If you add `role="parallax-container"` on any of element's parent then that element will be used to determine the animation progress.
+If you add `role="parallax-container"` on any of element's parent then that element's scrolling position will govern animation timeline progress[[?]](https://webdevelopers-eu.github.io/DNA-Parallax/tutorial/#s7).
 
 Animation starts at
 * **0%** container is just bellow the viewport
@@ -54,7 +54,7 @@ Container that determines progress:
 <element role="parallax-container">...</element>
 ```
 
-Supported modifiers:
+Supported modifiers[[?]](https://webdevelopers-eu.github.io/DNA-Parallax/tutorial/#s4):
 * **reverse** - play animation backwords. E.g. ```parallax="fly-in-top:reverse"``` will fly out up.
 * **shift(n%)** - delay or speed up start of the animation. E.g. ```parallax="fly-in-top:shift(10%)``` if animation starts at 0% this will make it start at 10%.
 * **scale(n%)** - delay or speed up start of the animation. E.g. ```parallax="fly-in-top:scale(0.5)``` if animation starts at 50% and ends at 100% it will make it start at 25% and finish at 50%.
