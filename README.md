@@ -14,6 +14,31 @@ Animation starts at
 
 The best way is to look at [tutorial](https://webdevelopers-eu.github.io/DNA-Parallax/tutorial/) or experiment with editable [CodePen](https://codepen.io/webdevelopers/pen/PVGKKO?editors=1100) examples.
 
+## Simple Example
+```HTML
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="jquery.parallax.js"></script>
+		<style>
+			@keyframes my-animation {
+				0%, 100% {
+					tansform: translate(100vw, 100vh) rotate(360deg);
+					opacity: 0;
+				}
+				50% {
+					tansform: translate(0vw, 0vh) rotate(360deg);
+					opacity: 1;
+				}
+			}
+		</style>
+	</head>
+	<body style="padding: 0px 100vh;">
+		<div parallax="my-animation">I will fly in and out!</div>
+	</body>
+</html>
+```
+
 ## Syntax
 
 Animated element:
@@ -31,6 +56,7 @@ Supported modifiers:
 * **scale(n%)** - delay or speed up start of the animation. E.g. ```parallax="fly-in-top:scale(0.5)``` if animation starts at 50% and ends at 100% it will make it start at 25% and finish at 50%.
 
 ## Limitations
+* **media queries** are not supported yet. I will add them when I see there is a demand. E.g. it is possible to support: ```@media (min-width: 700px) { @keyframes test {...} }```
 * **units** CSS animated properties must have same units. E.g. you cannot use `transition: rotate(360`**deg**`)` in one keyframe and `transition: rotate(9`**rad**`)` in next.
 * **IE** is not supported (yet). But it should be easy to create standard CSS fallback styles and all animation-related CSS styles put into `0%` key of the `@keyframe` - they will overwrite CSS defaults if browser is supported...
 
