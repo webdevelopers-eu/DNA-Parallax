@@ -35,7 +35,7 @@ The best way is to look at [tutorial](https://webdevelopers-eu.github.io/DNA-Par
   </head>
   <body>
 	<div role="parallax-container" style="height: 100vh; margin: 100vh 0px; overflow-x: hidden;">
-	  <h1 parallax="my-animation" style="position: fixed; top: 50vh; display: inline-block;">
+	  <h1 parallax="my-animation" style="position: fixed; top: 50vh;">
 		I will fly in and out!
 	  </h1>
 	</div>
