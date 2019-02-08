@@ -36,7 +36,7 @@
     var viewHeight = $window.height();
     var viewTopLast = viewTop;
     var scrolling = true;
-    var eventType = "frame"; //  "scroll" | "frame" use on-scroll event or requestAnimationFrame
+    var eventType = "scroll"; //  "scroll" | "frame" use on-scroll event or requestAnimationFrame
 
     function requestFrame() {
 	if (lock++) return; // prevent simultaneous recalcs
@@ -74,10 +74,14 @@
 
     function scrollingOff() {
 	scrolling = false;
+	$('[parallax-will-change]').css('will-change', '');
     }
 
     function scrollingOn() {
 	scrolling = true;
+	$('[parallax-will-change]').css('will-change', function() {
+	    return this.getAttribute('parallax-will-change');
+	});
     }
 
     // jQuery plugin - progress animation or force reinitialization
@@ -92,21 +96,23 @@
 
 
 	return this.each(function() {
+	    var $this = $(this);
+
 	    // Initialize
 	    if (!this.parallax || param == 'init') {
 		try {
 		    this.parallax = new DnaParallax(this);
 		} catch (e) {
-		    if (!$(this).attr('parallax-error')) { // To avoid flooding console with errors. Log first only.
+		    if (!$this.attr('parallax-error')) { // To avoid flooding console with errors. Log first only.
 			console.error("DNA Parallax Exception: " + e.message);
 		    }
-		    $(this).attr({
+		    $this.attr({
 			'parallax-status': 'error',
 			'parallax-error': e.message
 		    });
 		    return;
 		}
-		$(this).attr('parallax-status', 'ready');
+		$this.attr('parallax-status', 'ready');
 	    }
 	    this.parallax.step();
 	});
@@ -138,6 +144,12 @@
 
 	// Parse settings
 	this.anim = new DnaAnim(this.$element.attr('parallax'));
+
+	// This makes it blurry in Chrome - needs to be set and unset afterword...
+	// https://developer.mozilla.org/en-US/docs/Web/CSS/will-change
+	var animateProps = Object.getOwnPropertyNames(this.anim.namedProps);
+	animateProps.push('scroll-position');
+	this.$element.attr("parallax-will-change", animateProps.join(', '));
     }
 
     /**
