@@ -58,7 +58,7 @@ Container that determines progress:
 Supported modifiers[[?]](https://webdevelopers-eu.github.io/DNA-Parallax/tutorial/#s4):
 * **reverse** - play animation backwords. E.g. ```parallax="fly-in-top:reverse"``` will fly out up.
 * **shift(n%)** - delay or speed up start of the animation. E.g. ```parallax="fly-in-top:shift(10%)``` if animation starts at 0% this will make it start at 10%.
-* **scale(n%)** - delay or speed up start of the animation. E.g. ```parallax="fly-in-top:scale(0.5)``` if animation starts at 50% and ends at 100% it will make it start at 25% and finish at 50%.
+* **scale(n)** - delay or speed up start of the animation. E.g. ```parallax="fly-in-top:scale(0.5)``` if animation starts at 50% and ends at 100% it will make it start at 25% and finish at 50%.
 
 ## Limitations
 * **media queries** are not supported yet. I will add them when I see there is a demand. E.g. it is possible to support: ```@media (min-width: 700px) { @keyframes test {...} }```
