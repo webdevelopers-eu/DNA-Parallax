@@ -12,6 +12,20 @@
 
 	<!-- CSS is embeded in this example to allow view of this file localy without webserver to avoid CORS security issues -->
 	<style>
+	    @media screen and (max-width:700px) {
+		@keyframes responsive {
+		}
+	    }
+
+	    @media screen and (min-width:700px) {
+		@keyframes responsive {
+		}
+	    }
+
+	    @keyframes responsive {
+	    }
+
+
 	    html {
 		scroll-behavior: smooth;
 		box-sizing: border-box;
@@ -269,6 +283,7 @@
 		30% {opacity: 0;}
 		50% {transform: translateY(0vh); opacity: 1;}
 	    }
+
 
 	    /* Documentation Schema CSS */
 	    .schema {

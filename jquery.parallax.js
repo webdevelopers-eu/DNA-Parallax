@@ -38,6 +38,26 @@
     var scrolling = true;
     var eventType = "scroll"; //  "scroll" | "frame" use on-scroll event or requestAnimationFrame
 
+    // Install animation hooks
+    function installHooks() {
+	$window
+	    .on("resize.parallax", function() {
+		viewHeight = $window.height();
+	    });
+
+	if (eventType == 'scroll') {
+	    $window
+		.on("wheel.parallax scroll.parallax resize.parallax", function() {
+		    scrollingOn();
+		    requestFrame();
+		    clearTimeout(scrolling);
+		    scrolling = setTimeout(scrollingOff, 24);
+		})
+		.on("load.parallax", requestFrame);
+	}
+	$(requestFrame);
+    }
+
     function requestFrame() {
 	if (lock++) return; // prevent simultaneous recalcs
 	while (scrolling && animateFrame());
@@ -79,7 +99,7 @@
 
     function scrollingOn() {
 	scrolling = true;
-	$('[parallax-will-change]').css('will-change', function() {
+	$('[parallax-will-change][parallax-status="on"]').css('will-change', function() {
 	    return this.getAttribute('parallax-will-change');
 	});
     }
@@ -508,22 +528,7 @@
     };
 
     //------------------------------------------------------------------------
-    // Hook on scroll
-    $window
-	.on("resize.parallax", function() {
-	    viewHeight = $window.height();
-	});
 
-    if (eventType == 'scroll') {
-	$window
-	    .on("wheel.parallax scroll.parallax resize.parallax", function() {
-		scrollingOn();
-		requestFrame();
-		clearTimeout(scrolling);
-		scrolling = setTimeout(scrollingOff, 100);
-	    })
-	    .on("load.parallax", requestFrame);
-    }
-    $(requestFrame);
+    installHooks();
 
 })(jQuery, window);
